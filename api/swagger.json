@@ -1,0 +1,122 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Exemplo com Swagger",
+    "version": "1.0.0",
+    "description": "API para retornar data/hora e concatenar valores"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/gf/calcular-financas": {
+      "post": {
+        "tags": ["Gestor de Finanças"],
+        "summary": "Calcula os valores financeiros do Gestor de Finanças",
+        "description": "Recebe salário bruto, lista de gastos fixos, percentuais para investimento e lazer e retorna os cálculos de INSS, IRPF, salário líquido e saldo final.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "salarioBruto": {
+                    "type": "number",
+                    "example": 10000
+                  },
+                  "gastosFixos": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "nome": {
+                          "type": "string",
+                          "example": "Aluguel"
+                        },
+                        "valor": {
+                          "type": "number",
+                          "example": 1200
+                        }
+                      },
+                      "required": ["nome", "valor"]
+                    }
+                  },
+                  "percentualInvestimento": {
+                    "type": "number",
+                    "example": 15
+                  },
+                  "percentualLazer": {
+                    "type": "number",
+                    "example": 20
+                  }
+                },
+                "required": ["salarioBruto", "gastosFixos", "percentualInvestimento", "percentualLazer"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cálculos financeiros retornados com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "inss": {
+                      "type": "number",
+                      "example": 828.38
+                    },
+                    "irpf": {
+                      "type": "number",
+                      "example": 1246.80
+                    },
+                    "gastosTotais": {
+                      "type": "number",
+                      "example": 1600
+                    },
+                    "salarioLiquido": {
+                      "type": "number",
+                      "example": 6324.82
+                    },
+                    "valorInvestimento": {
+                      "type": "number",
+                      "example": 948.72
+                    },
+                    "valorLazer": {
+                      "type": "number",
+                      "example": 1264.96
+                    },
+                    "saldoFinal": {
+                      "type": "number",
+                      "example": 4111.14
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro na requisição, dados inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "erro": {
+                      "type": "string",
+                      "example": "Salário bruto inválido ou ausente."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
